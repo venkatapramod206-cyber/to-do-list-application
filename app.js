@@ -16,8 +16,8 @@ function renderTasks() {
     li.innerHTML = `
       <span>${task.text}</span>
       <div>
-        <button onclick="toggle(${index})">${task.completed ? 'Undo' : 'Done'}</button>
-        <button class="delete" onclick="remove(${index})">Delete</button>
+        <button class="btn-done" onclick="toggle(${index})">${task.completed ? 'Undo' : 'Done'}</button>
+        <button class="btn-delete" onclick="remove(${index})">Delete</button>
       </div>
     `;
     list.appendChild(li);
@@ -36,7 +36,7 @@ function remove(index) {
   renderTasks();
 }
 
-addBtn.onclick = () => {
+addBtn.addEventListener('click', () => {
   const text = input.value.trim();
   if (text) {
     tasks.push({ text, completed: false });
@@ -44,10 +44,10 @@ addBtn.onclick = () => {
     saveTasks();
     renderTasks();
   }
-};
+});
 
-input.onkeypress = (e) => {
+input.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') addBtn.click();
-};
+});
 
 renderTasks();
