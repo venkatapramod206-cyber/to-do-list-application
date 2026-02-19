@@ -1,21 +1,55 @@
-﻿body { 
-  font-family: system-ui, -apple-system, sans-serif; 
-  background: linear-gradient(135deg,
-# index.html
+﻿<!DOCTYPE html>
+<html><head><title>To-Do</title><style>body{font-family:Arial;background:#f0f0f0;padding:20px}.container{max-width:500px;margin:auto;background:white;padding:30px;border-radius:10px}input{width:70%;padding:12px}button{padding:12px 20px;background:#4CAF50;color:white;border:none;cursor:pointer}li{padding:12px;margin:8px 0;background:#f9f9f9;border-radius:5px;display:flex;justify-content:space-between}.completed{text-decoration:line-through;opacity:0.6}</style></head><body><div
+# 1. Add complete HTML/CSS/JS to index.html (single file app)
 @"
 <!DOCTYPE html>
 <html>
 <head>
 <title>To-Do List</title>
-<link rel='stylesheet' href='style.css'>
+<style>
+body{font-family:Arial;background:#f0f0f0;padding:20px;margin:0}
+.container{max-width:500px;margin:auto;background:white;padding:30px;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,0.1)}
+h1{text-align:center;color:#333;margin-bottom:30px}
+input{width:70%;padding:12px;border:1px solid #ddd;border-radius:5px;font-size:16px}
+button{padding:12px 20px;background:#4CAF50;color:white;border:none;border-radius:5px;cursor:pointer;margin-left:10px}
+button:hover{background:#45a049}
+ul{list-style:none;padding:0}
+li{padding:15px;margin:10px 0;background:#f9f9f9;border-radius:5px;display:flex;justify-content:space-between;align-items:center}
+.completed{text-decoration:line-through;opacity:0.6}
+.delete{background:#f44336}
+.delete:hover{background:#da190b}
+</style>
 </head>
 <body>
 <div class='container'>
-<h1>📝 To-Do List</h1>
-<input id='taskInput' placeholder='Add task...'>
-<button id='addBtn'>Add</button>
+<h1>📝 My To-Do List</h1>
+<input id='taskInput' placeholder='Enter a new task...' onkeypress='if(event.keyCode==13)addTask()'>
+<button onclick='addTask()'>Add Task</button>
 <ul id='taskList'></ul>
 </div>
-<script src='app.js'></script>
+<script>
+let tasks=JSON.parse(localStorage.getItem('tasks'))||[];
+function save(){localStorage.setItem('tasks',JSON.stringify(tasks))}
+function render(){
+document.getElementById('taskList').innerHTML='';
+tasks.forEach((task,i)=>{
+const li=document.createElement('li');
+li.className=task.completed?'completed':'';
+li.innerHTML=<span></span><button onclick='toggle()'></button><button class='delete' onclick='remove()'>Delete</button>;
+document.getElementById('taskList').appendChild(li);
+})
+}
+function addTask(){
+const text=document.getElementById('taskInput').value.trim();
+if(text){
+tasks.push({text,completed:false});
+document.getElementById('taskInput').value='';
+save();render()
+}
+}
+function toggle(i){tasks[i].completed=!tasks[i].completed;save();render()}
+function remove(i){tasks.splice(i,1);save();render()}
+render();
+</script>
 </body>
 </html>
